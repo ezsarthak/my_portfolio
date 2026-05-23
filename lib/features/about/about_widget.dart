@@ -27,8 +27,8 @@ class AboutWidget extends StatelessWidget {
           ),
           const SizedBox(height: 40),
           Wrap(
-            runSpacing: 20,
-            spacing: 20,
+            runSpacing: 30,
+            spacing: 30,
             alignment: WrapAlignment.start,
             children: PortfolioData.quickStats.map((stat) => _buildStatCard(w, isMobile, stat['value']!, stat['label']!, stat['image']!)).toList(),
           )
@@ -49,7 +49,7 @@ class AboutWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Image.asset(imagePath, width: 60, height: 60, fit: BoxFit.contain),
-          const SizedBox(width: 15),
+          const SizedBox(width: 25),
           Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

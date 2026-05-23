@@ -30,11 +30,10 @@ class _HoverSocialIconState extends State<HoverSocialIcon> {
         onTap: () => launchUrl(Uri.parse(widget.link)),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          child: SocialWidget(
-            placeholderText: '',
-            iconData: widget.iconPath,
-            iconColor: _isHovered ? AppColors.purple : Colors.white,
-            link: widget.link,
+          child: Icon(
+            widget.iconPath,
+            color: _isHovered ? AppColors.purple : Colors.white,
+            size: 32,
           ),
         ),
       ),

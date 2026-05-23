@@ -35,47 +35,135 @@
     body {
       margin: 0;
       padding: 0;
-      background-color: #0a0e21;
-      overflow: hidden;
+      background-color: #11071F; /* Match exactly with AppColors.bgColor */
     }
 
-    .loading-container {
+    #typographic-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #11071F;
+      z-index: 9999;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #0a0e21;
+      justify-content: flex-end;
+      opacity: 1;
+      transition: opacity 0.8s ease-out;
+      pointer-events: none; /* Let clicks pass through when fading out */
     }
 
-    .loading-spinner {
-      width: 48px;
-      height: 48px;
-      border: 3px solid rgba(255, 255, 255, 0.1);
-      border-top: 3px solid #00d4ff;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
+    .loader-content {
+      width: 100%;
+      padding-bottom: 50px;
+      box-sizing: border-box;
     }
 
-    .loading-text {
-      margin-top: 16px;
-      color: rgba(255, 255, 255, 0.5);
+    #num {
       font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      letter-spacing: 2px;
+      font-size: 15vw;
+      font-weight: bold;
+      color: white;
+      line-height: 1;
+      letter-spacing: -5px;
+      margin-left: 5vw;
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    #bar-container {
+      width: 100%;
+      height: 2px;
+      background-color: transparent;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    #bar {
+      height: 100%;
+      width: 0%;
+      background-color: #A362FF; /* Match exactly with AppColors.purple */
+    }
+
+    .loader-text {
+      font-family: 'Inter', sans-serif;
+      color: rgba(255, 255, 255, 0.54);
+      font-size: 12px;
+      letter-spacing: 2px;
+      font-weight: 600;
+      margin-left: 5vw;
+    }
+
+    @media (max-width: 800px) {
+      #num { font-size: 30vw; margin-left: 8vw; letter-spacing: -2px; }
+      .loader-text { font-size: 10px; margin-left: 8vw; }
     }
   </style>
 </head>
 <body>
-  <div class="loading-container" id="loading">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">LOADING</div>
+  <div id="typographic-loader">
+    <div class="loader-content">
+      <div id="num">000</div>
+      <div id="bar-container"><div id="bar"></div></div>
+      <div class="loader-text">EZSARTHAK.COM / CRAFTED WITH FLUTTER & AI</div>
+    </div>
   </div>
+  <div id="loading" style="display: none;"></div>
+
   <script src="flutter_bootstrap.js" async></script>
+
+  <script>
+    (function() {
+      const numEl = document.getElementById('num');
+      const barEl = document.getElementById('bar');
+      const loader = document.getElementById('typographic-loader');
+      
+      let flutterReady = false;
+
+      // Listen for Flutter's official ready event
+      document.addEventListener('flutter-first-frame', function() {
+        flutterReady = true;
+      });
+
+      let start = null;
+      
+      function step(timestamp) {
+        if (!start) start = timestamp;
+        let elapsed = timestamp - start;
+
+        if (flutterReady) {
+          // The exact moment Flutter is ready, snap to 100 and fade out!
+          numEl.innerText = "100";
+          barEl.style.width = '100%';
+          
+          setTimeout(() => {
+            loader.style.opacity = '0';
+            setTimeout(() => loader.remove(), 800);
+          }, 300); // Brief hold at 100 before fading
+          
+          return; // Stop the animation loop
+        }
+
+        // Asymptotic curve: rockets up fast, then crawls toward 99%
+        // At 1s: ~63%, At 2s: ~86%, At 3s: ~95%, At 4s: ~98%
+        let percentage = 1 - Math.exp(-elapsed / 1200); 
+        let currentNum = Math.floor(99 * percentage);
+        
+        numEl.innerText = currentNum.toString().padStart(3, '0');
+        barEl.style.width = currentNum + '%';
+
+        window.requestAnimationFrame(step);
+      }
+      window.requestAnimationFrame(step);
+
+      // Ultimate failsafe: If Flutter hasn't fired the ready event after 10 seconds,
+      // forcefully hide the loader so the user isn't permanently blocked by a crash.
+      setTimeout(() => {
+        if (!flutterReady && document.getElementById('typographic-loader')) {
+           loader.style.opacity = '0';
+           setTimeout(() => loader.remove(), 800);
+        }
+      }, 10000);
+    })();
+  </script>
 </body>
 </html>

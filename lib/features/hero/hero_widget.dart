@@ -5,7 +5,9 @@ import 'package:portfolio/design/utils/app_colors.dart';
 import 'package:portfolio/design/widgets/magnetic_button.dart';
 import 'package:portfolio/design/widgets/tilt_card.dart';
 import 'package:social_media_flutter/social_media_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/link.dart';
 import 'package:portfolio/design/widgets/hover_social_icon.dart';
 
 import 'package:rive/rive.dart';
@@ -17,7 +19,7 @@ class HeroWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     bool isMobile = w < 800;
-    
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: isMobile ? 0 : w / 30),
       height: MediaQuery.of(context).size.height * 0.9,
@@ -36,8 +38,14 @@ class HeroWidget extends StatelessWidget {
                   color: AppColors.purple.withOpacity(0.3),
                 )
               ]),
-            ).animate(onPlay: (controller) => controller.repeat(reverse: true))
-             .scaleXY(begin: 1.0, end: 1.2, duration: 4.seconds, curve: Curves.easeInOut),
+            )
+                .animate(
+                    onPlay: (controller) => controller.repeat(reverse: true))
+                .scaleXY(
+                    begin: 1.0,
+                    end: 1.2,
+                    duration: 4.seconds,
+                    curve: Curves.easeInOut),
           ),
           // Rive Animation
           Align(
@@ -45,20 +53,31 @@ class HeroWidget extends StatelessWidget {
             child: SizedBox(
               width: 600,
               height: 600,
-              child: RiveAnimation.asset('assets/animations/intro_animation.riv', fit: BoxFit.contain),
+              child: RiveAnimation.asset(
+                  'assets/animations/intro_animation.riv',
+                  fit: BoxFit.contain),
             ),
-          ).animate().fadeIn(duration: 500.ms, delay: 100.ms).slideY(begin: 0.1, end: 0, curve: Curves.easeOutCubic),
+          )
+              .animate()
+              .fadeIn(duration: 500.ms, delay: 100.ms)
+              .slideY(begin: 0.1, end: 0, curve: Curves.easeOutCubic),
           Center(
-            child: isMobile 
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: _buildContent(w, isMobile),
-                ).animate().fadeIn(duration: 400.ms, curve: Curves.easeOut).slideY(begin: 0.05, end: 0, curve: Curves.easeOutCubic)
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: _buildContent(w, isMobile),
-                ).animate().fadeIn(duration: 400.ms, curve: Curves.easeOut).slideX(begin: -0.05, end: 0, curve: Curves.easeOutCubic),
+            child: isMobile
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: _buildContent(w, isMobile),
+                  )
+                    .animate()
+                    .fadeIn(duration: 400.ms, curve: Curves.easeOut)
+                    .slideY(begin: 0.05, end: 0, curve: Curves.easeOutCubic)
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: _buildContent(w, isMobile),
+                  )
+                    .animate()
+                    .fadeIn(duration: 400.ms, curve: Curves.easeOut)
+                    .slideX(begin: -0.05, end: 0, curve: Curves.easeOutCubic),
           ),
         ],
       ),
@@ -82,7 +101,8 @@ class HeroWidget extends StatelessWidget {
       SizedBox(width: isMobile ? 0 : 100, height: isMobile ? 20 : 0),
       Expanded(
         child: Column(
-          crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+          crossAxisAlignment:
+              isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RichText(
@@ -135,15 +155,22 @@ class HeroWidget extends StatelessWidget {
             const SizedBox(height: 20),
             SizedBox(
               child: Row(
-                mainAxisAlignment: isMobile ? MainAxisAlignment.center : MainAxisAlignment.start,
+                mainAxisAlignment: isMobile
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.start,
                 children: [
                   socialIcon(PortfolioData.github, SocialIconsFlutter.github),
-                  socialIcon(PortfolioData.linkedin, SocialIconsFlutter.linkedin_box),
+                  socialIcon(
+                      PortfolioData.linkedin, SocialIconsFlutter.linkedin_box),
                   socialIcon(PortfolioData.twitter, SocialIconsFlutter.twitter),
-                  socialIcon(PortfolioData.leetcode, SocialIconsFlutter.apple), // Using placeholder
+                  socialIcon(PortfolioData.leetcode, FontAwesomeIcons.medium),
                 ],
-              ).animate(delay: 100.ms).fadeIn(duration: 400.ms).slideY(begin: 0.2, end: 0, curve: Curves.easeOutBack),
-            )
+              )
+                  .animate(delay: 100.ms)
+                  .fadeIn(duration: 400.ms)
+                  .slideY(begin: 0.2, end: 0, curve: Curves.easeOutBack),
+            ),
+          
           ],
         ),
       )

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio/config/portfolio_data.dart';
 import 'package:portfolio/design/utils/app_colors.dart';
 import 'package:portfolio/design/widgets/buttons/app_outlined_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NavBarWidget extends StatelessWidget {
   final List<String> sectionNames;
@@ -25,14 +26,17 @@ class NavBarWidget extends StatelessWidget {
         color: AppColors.navBarColor,
         child: Center(
             child: Row(
-          mainAxisAlignment: isMobile ? MainAxisAlignment.center : MainAxisAlignment.spaceAround,
+          mainAxisAlignment: isMobile
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.spaceAround,
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 color: AppColors.purpleDark.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.purple.withValues(alpha: 0.5), width: 1),
+                border: Border.all(
+                    color: AppColors.purple.withValues(alpha: 0.5), width: 1),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -68,7 +72,12 @@ class NavBarWidget extends StatelessWidget {
               height: 35,
               width: 140,
               textStyle: const TextStyle(fontSize: 12),
-              onTap: () {},
+              onTap: () async {
+                final Uri _url = Uri.parse(PortfolioData.resumeUrl);
+                if (!await launchUrl(_url)) {
+                  throw Exception('Could not launch $_url');
+                }
+              },
             )
           ],
         )));

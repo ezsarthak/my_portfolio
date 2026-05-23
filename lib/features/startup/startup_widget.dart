@@ -60,12 +60,9 @@ class StartupWidget extends StatelessWidget {
                 Wrap(
                   spacing: 20,
                   runSpacing: 20,
-                  children: [
-                    _buildMetric('Users', startup['metrics']['users']),
-                    _buildMetric('Colleges', startup['metrics']['colleges']),
-                    _buildMetric('Revenue', startup['metrics']['revenue']),
-                    _buildMetric('Team Size', startup['metrics']['teamSize']),
-                  ],
+                  children: (startup['metrics'] as Map<String, dynamic>).entries.map(
+                    (e) => _buildMetric(e.key, e.value.toString())
+                  ).toList(),
                 )
               ],
             ),

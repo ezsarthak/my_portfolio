@@ -11,7 +11,7 @@ class PortfolioData {
   static const String university = 'Indian Institute of Information Technology, Bhopal';
   static const String degree = 'B.Tech in Information Technology';
   static const String graduationYear = '2028';
-  static const String resumeUrl = '#';
+  static const String resumeUrl = 'https://bit.ly/ezsarthak_resume';
 
   // Social
   static const String github = 'https://github.com/ezsarthak';
@@ -37,10 +37,8 @@ class PortfolioData {
     'role': 'Founder / Core Developer',
     'status': 'Active',
     'metrics': {
-      'users': '1,000+',
-      'colleges': 'N/A',
-      'revenue': 'Pre-revenue',
-      'teamSize': 'Core',
+      'Stage': 'Building Phase',
+      'Team': 'Core Only',
     }
   };
 
