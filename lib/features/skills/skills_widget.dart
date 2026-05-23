@@ -103,7 +103,7 @@ class SkillsWidget extends StatelessWidget {
 
 class HoverTechStackIcon extends StatefulWidget {
   final String name;
-  final IconData? icon;
+  final dynamic icon;
   final String? image;
   final String? text;
 
@@ -164,7 +164,9 @@ class _HoverTechStackIconState extends State<HoverTechStackIcon> {
                   ? SvgPicture.asset(widget.image!, fit: BoxFit.contain, width: 28, height: 28)
                   : Image.asset(widget.image!, fit: BoxFit.contain, width: 28, height: 28)
             else if (widget.icon != null)
-              Icon(widget.icon, size: 28, color: Colors.white)
+              (widget.icon is IconData
+                  ? Icon(widget.icon as IconData, size: 28, color: Colors.white)
+                  : FaIcon(widget.icon, size: 28, color: Colors.white))
             else if (widget.text != null)
               Container(
                 width: 28,

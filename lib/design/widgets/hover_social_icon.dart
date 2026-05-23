@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:portfolio/design/utils/app_colors.dart';
 
 class HoverSocialIcon extends StatefulWidget {
   final String link;
-  final IconData? iconPath;
+  final dynamic iconPath;
   final String? assetPath;
 
   const HoverSocialIcon({
@@ -44,11 +45,17 @@ class _HoverSocialIconState extends State<HoverSocialIcon> {
                       width: 32,
                       height: 32,
                       color: _isHovered ? AppColors.purple : Colors.white))
-              : Icon(
-                  widget.iconPath,
-                  color: _isHovered ? AppColors.purple : Colors.white,
-                  size: 32,
-                ),
+              : (widget.iconPath is IconData
+                  ? Icon(
+                      widget.iconPath as IconData,
+                      color: _isHovered ? AppColors.purple : Colors.white,
+                      size: 32,
+                    )
+                  : FaIcon(
+                      widget.iconPath,
+                      color: _isHovered ? AppColors.purple : Colors.white,
+                      size: 32,
+                    )),
         ),
       ),
     );

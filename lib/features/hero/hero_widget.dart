@@ -174,7 +174,7 @@ class HeroWidget extends StatelessWidget {
     ];
   }
 
-  Widget socialIcon(String link, IconData iconPath) {
+  Widget socialIcon(String link, dynamic iconPath) {
     return MagneticButton(
       magneticStrength: 0.3,
       child: Padding(
