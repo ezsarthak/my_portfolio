@@ -1,0 +1,156 @@
+import 'package:flutter/material.dart';
+import 'package:portfolio/config/portfolio_data.dart';
+import 'package:portfolio/design/utils/app_colors.dart';
+import 'package:social_media_flutter/social_media_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'package:rive/rive.dart';
+
+class HeroWidget extends StatelessWidget {
+  const HeroWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
+    bool isMobile = w < 800;
+    
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: isMobile ? 0 : w / 30),
+      height: MediaQuery.of(context).size.height * 0.9,
+      child: Stack(
+        children: [
+          // Background Glow
+          Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              height: 200,
+              width: 200,
+              decoration: BoxDecoration(color: Colors.transparent, boxShadow: [
+                BoxShadow(
+                  blurRadius: 300,
+                  spreadRadius: 300,
+                  color: AppColors.purple.withOpacity(0.3),
+                )
+              ]),
+            ),
+          ),
+          // Rive Animation
+          Align(
+            alignment: Alignment.bottomRight,
+            child: SizedBox(
+              width: 600,
+              height: 600,
+              child: RiveAnimation.asset('assets/animations/intro_animation.riv', fit: BoxFit.contain),
+            ),
+          ),
+          Center(
+            child: isMobile 
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _buildContent(w, isMobile),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: _buildContent(w, isMobile),
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildContent(double w, bool isMobile) {
+    return [
+      CircleAvatar(
+        radius: isMobile ? 64 : w / 14,
+        backgroundColor: Colors.white,
+        child: CircleAvatar(
+          radius: isMobile ? 60 : w / 14 - 4,
+          backgroundColor: AppColors.purpleDark,
+          backgroundImage: const AssetImage('assets/images/self.jpeg'),
+        ),
+      ),
+      SizedBox(width: isMobile ? 0 : 100, height: isMobile ? 20 : 0),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RichText(
+              textAlign: isMobile ? TextAlign.center : TextAlign.start,
+              text: TextSpan(
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Preah',
+                      fontSize: isMobile ? 24 : w / 40),
+                  children: [
+                    const TextSpan(text: 'I am '),
+                    TextSpan(
+                        text: '${PortfolioData.name} ',
+                        style: TextStyle(color: AppColors.purple))
+                  ]),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'A passionate builder,',
+              style: TextStyle(decoration: TextDecoration.underline),
+            ),
+            RichText(
+              textAlign: isMobile ? TextAlign.center : TextAlign.start,
+              text: TextSpan(
+                  style: TextStyle(
+                      color: Colors.white,
+                      height: 1.2,
+                      fontFamily: 'Preah',
+                      fontSize: isMobile ? 32 : w / 20,
+                      fontWeight: FontWeight.bold),
+                  children: [
+                    const TextSpan(text: 'Crafting code to bring\n'),
+                    const TextSpan(text: 'ideas to '),
+                    TextSpan(
+                        text: 'life',
+                        style: TextStyle(color: AppColors.purple)),
+                    const TextSpan(text: '...')
+                  ]),
+            ),
+            const SizedBox(height: 60),
+            Text(
+              PortfolioData.tagline,
+              textAlign: isMobile ? TextAlign.center : TextAlign.start,
+              style: TextStyle(
+                  color: Colors.white,
+                  height: 1.2,
+                  fontFamily: 'Preah',
+                  fontSize: isMobile ? 16 : w / 44),
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              child: Row(
+                mainAxisAlignment: isMobile ? MainAxisAlignment.center : MainAxisAlignment.start,
+                children: [
+                  socialIcon(PortfolioData.github, SocialIconsFlutter.github),
+                  socialIcon(PortfolioData.linkedin, SocialIconsFlutter.linkedin_box),
+                  socialIcon(PortfolioData.twitter, SocialIconsFlutter.twitter),
+                  socialIcon(PortfolioData.leetcode, SocialIconsFlutter.apple), // Using placeholder
+                ],
+              ),
+            )
+          ],
+        ),
+      )
+    ];
+  }
+
+  Widget socialIcon(String link, IconData iconPath) {
+    return InkWell(
+      onTap: () => launchUrl(Uri.parse(link)),
+      child: SocialWidget(
+        placeholderText: '',
+        iconData: iconPath,
+        iconColor: Colors.white,
+        link: link,
+      ),
+    );
+  }
+}

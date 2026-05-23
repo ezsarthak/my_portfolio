@@ -1,0 +1,38 @@
+name: portfolio
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  google_fonts: ^6.2.1
+  url_launcher: ^6.3.1
+  font_awesome_flutter: ^10.8.0
+  visibility_detector: ^0.4.0+2
+  flutter_svg: any
+  responsive_builder: any
+  social_media_flutter: any
+  marquee: any
+  rive: ^0.11.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/animations/
+    - assets/icons/
+    - assets/project_icons/
+  fonts:
+    - family: Preah
+      fonts:
+        - asset: assets/fonts/Preahvihear-Regular.ttf
