@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/config/portfolio_data.dart';
 import 'package:portfolio/design/utils/app_colors.dart';
+import 'package:portfolio/design/widgets/tilt_card.dart';
 
 class InternshipsWidget extends StatelessWidget {
   const InternshipsWidget({super.key});
@@ -41,13 +42,15 @@ class InternshipsWidget extends StatelessWidget {
 
   Widget _buildInternshipCard(
       double w, bool isMobile, String company, String role, String duration, String desc) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () {},
-        borderRadius: BorderRadius.circular(20),
-        hoverColor: AppColors.purple.withOpacity(0.1),
-        child: Container(
+    return TiltCard(
+      depth: 10,
+      child: Material(
+        color: Colors.transparent,
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: () {},
+            child: Container(
           width: isMobile ? w * 0.8 : w / 2.4,
           height: 220,
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
@@ -103,6 +106,8 @@ class InternshipsWidget extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      ),
       ),
     );
   }

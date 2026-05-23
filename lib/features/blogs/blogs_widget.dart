@@ -44,15 +44,15 @@ class BlogsWidget extends StatelessWidget {
       double w, bool isMobile, String title, String date, String desc, String link) {
     return Material(
       color: Colors.transparent,
-      child: InkWell(
-        onTap: () {
-          if (link != '#') {
-            launchUrl(Uri.parse(link));
-          }
-        },
-        borderRadius: BorderRadius.circular(20),
-        hoverColor: AppColors.purple.withOpacity(0.1),
-        child: Container(
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () {
+            if (link != '#') {
+              launchUrl(Uri.parse(link));
+            }
+          },
+          child: Container(
           width: isMobile ? w * 0.8 : w / 2.4,
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
           decoration: BoxDecoration(
@@ -81,6 +81,7 @@ class BlogsWidget extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }

@@ -27,15 +27,29 @@ class NavBarWidget extends StatelessWidget {
             child: Row(
           mainAxisAlignment: isMobile ? MainAxisAlignment.center : MainAxisAlignment.spaceAround,
           children: [
-            RichText(
-              text: TextSpan(
-                  style: GoogleFonts.inter(color: Colors.white, fontSize: 16),
-                  children: [
-                    TextSpan(
-                      text: '${PortfolioData.name} ',
-                      style: GoogleFonts.inter(color: AppColors.purple, fontWeight: FontWeight.bold),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppColors.purpleDark.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.purple.withValues(alpha: 0.5), width: 1),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.code_rounded, color: AppColors.purple, size: 20),
+                  const SizedBox(width: 8),
+                  Text(
+                    PortfolioData.name,
+                    style: GoogleFonts.inter(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.0,
                     ),
-                  ]),
+                  ),
+                ],
+              ),
             ),
             if (!isMobile)
               Row(

@@ -3,6 +3,7 @@ import 'package:portfolio/config/portfolio_data.dart';
 import 'package:portfolio/design/utils/app_colors.dart';
 import 'package:social_media_flutter/social_media_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:portfolio/design/widgets/hover_social_icon.dart';
 
 class ContactWidget extends StatelessWidget {
   const ContactWidget({super.key});
@@ -51,14 +52,9 @@ class ContactWidget extends StatelessWidget {
   }
 
   Widget socialIcon(String link, IconData iconPath) {
-    return InkWell(
-      onTap: () => launchUrl(Uri.parse(link)),
-      child: SocialWidget(
-        placeholderText: '',
-        iconData: iconPath,
-        iconColor: Colors.white,
-        link: link,
-      ),
+    return HoverSocialIcon(
+      link: link,
+      iconPath: iconPath,
     );
   }
 }

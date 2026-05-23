@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:portfolio/config/portfolio_data.dart';
 import 'package:portfolio/design/utils/app_colors.dart';
 import 'package:portfolio/design/widgets/buttons/app_outlined_button.dart';
+import 'package:portfolio/design/widgets/tilt_card.dart';
 
 class ProjectsWidget extends StatelessWidget {
   const ProjectsWidget({super.key});
@@ -65,13 +66,15 @@ class ProjectsWidget extends StatelessWidget {
   Widget _buildProjectCard(
       BuildContext context, bool isMobile, String title, String desc, String buttonText, {String? imagePath}) {
     double w = MediaQuery.of(context).size.width;
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () {},
-        borderRadius: BorderRadius.circular(20),
-        hoverColor: AppColors.purple.withOpacity(0.1),
-        child: Container(
+    return TiltCard(
+      depth: 10,
+      child: Material(
+        color: Colors.transparent,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () {},
+          child: Container(
           width: isMobile ? w * 0.8 : w / 2.4,
           height: 260,
           padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
@@ -133,6 +136,8 @@ class ProjectsWidget extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      ),
       ),
     );
   }

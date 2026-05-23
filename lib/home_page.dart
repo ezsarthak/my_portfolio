@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/config/portfolio_data.dart';
+import 'package:portfolio/design/widgets/animated_background.dart';
 import 'package:portfolio/features/navbar/navbar_widget.dart';
 import 'package:portfolio/features/hero/hero_widget.dart';
 import 'package:portfolio/features/about/about_widget.dart';
@@ -10,6 +11,7 @@ import 'package:portfolio/features/startup/startup_widget.dart';
 import 'package:portfolio/features/dsa/dsa_widget.dart';
 import 'package:portfolio/features/contact/contact_widget.dart';
 import 'package:portfolio/features/blogs/blogs_widget.dart';
+import 'package:portfolio/design/widgets/scroll_reveal.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -68,8 +70,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
+      body: AnimatedBackground(
+        child: Stack(
+          children: [
           SingleChildScrollView(
             controller: _scrollController,
             child: Column(
@@ -82,8 +85,9 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: List.generate(
                       _sections.length - 1, 
-                      (index) => Container(
+                      (index) => ScrollReveal(
                         key: _keys[index + 1],
+                        delay: Duration(milliseconds: 100 * (index % 2)),
                         child: _sections[index + 1],
                       ),
                     ),
@@ -102,6 +106,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ],
+      ),
       ),
     );
   }
