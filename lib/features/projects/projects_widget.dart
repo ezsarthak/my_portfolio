@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:portfolio/config/portfolio_data.dart';
-import 'package:portfolio/design/utils/app_colors.dart';
 
 import 'ide_readable.dart';
 import 'freelance_dashboard.dart';
@@ -35,17 +33,6 @@ class ProjectsWidget extends StatelessWidget {
           const SizedBox(height: 40),
           FreelanceDashboard(projects: PortfolioData.freelanceProjects, isMobile: isMobile),
         ],
-      ),
-    );
-  }
-
-  Widget _buildMacButton(Color color) {
-    return Container(
-      width: 12,
-      height: 12,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
       ),
     );
   }

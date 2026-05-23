@@ -43,7 +43,7 @@ class AboutWidget extends StatelessWidget {
       height: 180,
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
       decoration: BoxDecoration(
-          color: AppColors.purpleDark.withOpacity(0.5),
+          color: AppColors.purpleDark.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(20)),
       child: Row(
         mainAxisSize: MainAxisSize.min,

@@ -56,7 +56,7 @@ class BlogsWidget extends StatelessWidget {
           width: isMobile ? w * 0.8 : w / 2.4,
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
           decoration: BoxDecoration(
-              color: AppColors.purpleDark.withOpacity(0.5),
+              color: AppColors.purpleDark.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(20)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

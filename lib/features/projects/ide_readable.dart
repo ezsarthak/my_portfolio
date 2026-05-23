@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class IdeProjectGalleryReadable extends StatefulWidget {
   final List<Map<String, dynamic>> projects;
@@ -13,7 +14,7 @@ class IdeProjectGalleryReadable extends StatefulWidget {
 class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
   int activeIndex = 0;
   List<String> terminalLines = [
-    'arjun@nexus-machine:~/portfolio/projects\$ ',
+    'sarthak@nexus-machine:~/portfolio/projects\$ ',
   ];
   late List<String> files;
   bool isPanelOpen = false;
@@ -56,7 +57,7 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
     
     setState(() {
       isPanelOpen = true;
-      terminalLines.add('arjun@nexus-machine:~/portfolio/projects\$ ./run $file');
+      terminalLines.add('sarthak@nexus-machine:~/portfolio/projects\$ ./run $file');
       terminalLines.add('\x1B[33m[INFO]\x1B[0m Starting build process for ${project['title']}...');
     });
     
@@ -73,21 +74,21 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
       if (mounted) {
         setState(() {
           terminalLines.add('\x1B[32m[SUCCESS]\x1B[0m Environment launched successfully! Ready for action.');
-          terminalLines.add('arjun@nexus-machine:~/portfolio/projects\$ ');
+          terminalLines.add('sarthak@nexus-machine:~/portfolio/projects\$ ');
         });
       }
     });
   }
 
   Widget _buildTerminalLine(String line) {
-    if (line.startsWith('arjun@')) {
+    if (line.startsWith('sarthak@')) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 4.0),
         child: RichText(
           text: TextSpan(
             style: const TextStyle(fontFamily: 'monospace', fontSize: 13),
             children: [
-              const TextSpan(text: 'arjun@nexus-machine', style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold)),
+              const TextSpan(text: 'sarthak@nexus-machine', style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold)),
               const TextSpan(text: ':', style: TextStyle(color: Colors.white)),
               const TextSpan(text: '~/portfolio/projects\$ ', style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold)),
               TextSpan(text: line.substring(line.indexOf('\$') + 1), style: const TextStyle(color: Colors.white)),
@@ -153,7 +154,7 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
                   color: const Color(0xFF252526),
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
-                    BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 15, offset: const Offset(0, 8))
+                    BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 15, offset: const Offset(0, 8))
                   ],
                 ),
                 clipBehavior: Clip.antiAlias,
@@ -173,30 +174,36 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
                         const Icon(Icons.verified, color: Colors.blueAccent, size: 16),
                         const SizedBox(width: 8),
                         const Text('Sarthak Patil', style: TextStyle(color: Colors.blueAccent, fontSize: 16, fontWeight: FontWeight.w600)),
-                        const SizedBox(width: 16),
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const SizedBox(width: 4),
-                        const Text('5.0', style: TextStyle(color: Colors.white70, fontSize: 16)),
-                        const SizedBox(width: 16),
-                        const Icon(Icons.download, color: Colors.white54, size: 16),
-                        const SizedBox(width: 4),
-                        const Text('1k+', style: TextStyle(color: Colors.white54, fontSize: 16)),
+                        if (project.containsKey('stars') && project['stars'] != null && project['stars'].toString().isNotEmpty) ...[
+                          const SizedBox(width: 16),
+                          const Icon(Icons.star, color: Colors.amber, size: 16),
+                          const SizedBox(width: 4),
+                          Text(project['stars'].toString(), style: const TextStyle(color: Colors.white70, fontSize: 16)),
+                        ],
+                        if (project.containsKey('downloads') && project['downloads'] != null && project['downloads'].toString().isNotEmpty) ...[
+                          const SizedBox(width: 16),
+                          const Icon(Icons.download, color: Colors.white54, size: 16),
+                          const SizedBox(width: 4),
+                          Text(project['downloads'].toString(), style: const TextStyle(color: Colors.white54, fontSize: 16)),
+                        ],
                       ],
                     ),
-                    const SizedBox(height: 24),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: (project['tech'] != null ? project['tech'] as List<dynamic> : ['Flutter', 'REST API', 'Firebase']).map((t) => Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF2D2D30),
-                          borderRadius: BorderRadius.circular(4),
-                          border: Border.all(color: Colors.white12),
-                        ),
-                        child: Text(t.toString(), style: const TextStyle(fontSize: 13, color: Colors.white)),
-                      )).toList(),
-                    ),
+                    if (project.containsKey('tech') && project['tech'] != null && (project['tech'] as List).isNotEmpty) ...[
+                      const SizedBox(height: 24),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: (project['tech'] as List<dynamic>).map((t) => Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF2D2D30),
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: Colors.white12),
+                          ),
+                          child: Text(t.toString(), style: const TextStyle(fontSize: 13, color: Colors.white)),
+                        )).toList(),
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -217,7 +224,12 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
                 text: 'GitHub Repo',
                 icon: Icons.code,
                 color: Colors.white,
-                onTap: () {}, // No-op for now
+                onTap: () async {
+                  final url = Uri.parse(project['github'].toString());
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(url, mode: LaunchMode.externalApplication);
+                  }
+                },
                 filled: false,
               ),
               if (project['live'] != null && project['live'].toString().isNotEmpty && project['live'] != '#') ...[
@@ -226,7 +238,12 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
                   text: 'Live Demo',
                   icon: Icons.open_in_new,
                   color: Colors.blueAccent,
-                  onTap: () {}, // No-op
+                  onTap: () async {
+                    final url = Uri.parse(project['live'].toString());
+                    if (await canLaunchUrl(url)) {
+                      await launchUrl(url, mode: LaunchMode.externalApplication);
+                    }
+                  },
                   filled: false,
                 ),
               ]
@@ -241,63 +258,123 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
           const SizedBox(height: 40),
           
           // Enhanced Detail Section
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Technical Details', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 16),
-                    _buildFeatureRow(Icons.architecture, "Engineered with clean architecture and scalable code structure."),
-                    _buildFeatureRow(Icons.api, "Robust API integrations and backend communication."),
-                    _buildFeatureRow(Icons.speed, "Optimized for high performance and low latency."),
-                    _buildFeatureRow(Icons.security, "Implemented secure authentication and data handling."),
-                  ],
+          if (project.containsKey('technicalDetails') && project['technicalDetails'] != null && (project['technicalDetails'] as List).isNotEmpty) ...[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Technical Details', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 16),
+                      ...(project['technicalDetails'] as List<dynamic>).map((detail) {
+                        IconData icon = Icons.check_circle_outline;
+                        String dStr = detail.toString().toLowerCase();
+                        if (dStr.contains('api') || dStr.contains('rest') || dStr.contains('communication')) {
+                          icon = Icons.api;
+                        } else if (dStr.contains('architecture') || dStr.contains('clean') || dStr.contains('structure') || dStr.contains('design')) {
+                          icon = Icons.architecture;
+                        } else if (dStr.contains('performance') || dStr.contains('fast') || dStr.contains('speed') || dStr.contains('latency') || dStr.contains('optimiz')) {
+                          icon = Icons.speed;
+                        } else if (dStr.contains('security') || dStr.contains('secure') || dStr.contains('auth') || dStr.contains('encrypt')) {
+                          icon = Icons.security;
+                        } else if (dStr.contains('database') || dStr.contains('query') || dStr.contains('data') || dStr.contains('sql') || dStr.contains('mongo')) {
+                          icon = Icons.storage;
+                        } else if (dStr.contains('ai') || dStr.contains('model') || dStr.contains('predict') || dStr.contains('vision')) {
+                          icon = Icons.psychology;
+                        }
+                        return _buildFeatureRow(icon, detail.toString());
+                      }),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 40),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Project Status', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 16),
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF252526),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.white12),
+                const SizedBox(width: 40),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Project Status', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 16),
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF252526),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.white12),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Text('Deployment', style: TextStyle(color: Colors.white70)),
+                                Text('Production Ready', style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            const Divider(color: Colors.white12),
+                            const SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Text('Maintenance', style: TextStyle(color: Colors.white70)),
+                                Text('Active', style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text('Deployment', style: TextStyle(color: Colors.white70)),
-                              Text('Production Ready', style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                          const SizedBox(height: 12),
-                          const Divider(color: Colors.white12),
-                          const SizedBox(height: 12),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text('Maintenance', style: TextStyle(color: Colors.white70)),
-                              Text('Active', style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          ] else ...[
+            Row(
+              children: [
+                SizedBox(
+                  width: 400,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Project Status', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 16),
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF252526),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.white12),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Text('Deployment', style: TextStyle(color: Colors.white70)),
+                                Text('Production Ready', style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            const Divider(color: Colors.white12),
+                            const SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Text('Maintenance', style: TextStyle(color: Colors.white70)),
+                                Text('Active', style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
         ],
       ).animate(key: ValueKey(index)).fadeIn(duration: 400.ms).slideY(begin: 0.1),
     );
@@ -333,9 +410,9 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
   }
 
   Widget _buildInteractiveButton({required String text, required IconData icon, required Color color, required VoidCallback onTap, required bool filled}) {
+    bool isHovered = false;
     return StatefulBuilder(
       builder: (context, setState) {
-        bool isHovered = false;
         return MouseRegion(
           cursor: SystemMouseCursors.click,
           onEnter: (_) => setState(() => isHovered = true),
@@ -347,8 +424,8 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               decoration: BoxDecoration(
                 color: filled 
-                    ? (isHovered ? color.withOpacity(0.8) : color) 
-                    : (isHovered ? Colors.white.withOpacity(0.1) : Colors.transparent),
+                    ? (isHovered ? color.withValues(alpha: 0.8) : color) 
+                    : (isHovered ? Colors.white.withValues(alpha: 0.1) : Colors.transparent),
                 borderRadius: BorderRadius.circular(4),
                 border: Border.all(color: filled ? Colors.transparent : Colors.white24),
               ),
@@ -414,7 +491,7 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFF333333)),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 30, offset: const Offset(0, 15))
+          BoxShadow(color: Colors.black.withValues(alpha: 0.5), blurRadius: 30, offset: const Offset(0, 15))
         ],
       ),
       child: Column(
@@ -490,15 +567,15 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
-                          child: Text('EXPLORER', style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+                          child: Text('EXPLORER', style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
                           child: Row(
                             children: [
-                              Icon(Icons.keyboard_arrow_down, color: Colors.white.withOpacity(0.8), size: 18),
+                              Icon(Icons.keyboard_arrow_down, color: Colors.white.withValues(alpha: 0.8), size: 18),
                               const SizedBox(width: 4),
-                              Text('PORTFOLIO_WORKSPACE', style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 11, fontWeight: FontWeight.bold)),
+                              Text('PORTFOLIO_WORKSPACE', style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 11, fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
@@ -602,15 +679,15 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
                           ),
                           child: Row(
                             children: [
-                              Text('portfolio_workspace', style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 13)),
-                              Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.6), size: 18),
-                              Text('projects', style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 13)),
-                              Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.6), size: 18),
+                              Text('portfolio_workspace', style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 13)),
+                              Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.6), size: 18),
+                              Text('projects', style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 13)),
+                              Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.6), size: 18),
                               Expanded(
                                 child: Text(
                                   files[activeIndex],
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 13),
+                                  style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 13),
                                 ),
                               ),
                             ],

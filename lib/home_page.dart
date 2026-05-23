@@ -73,40 +73,46 @@ class _HomePageState extends State<HomePage> {
       body: AnimatedBackground(
         child: Stack(
           children: [
-          SingleChildScrollView(
-            controller: _scrollController,
-            child: Column(
-              children: [
-                const SizedBox(height: 60), // Space for sticky navbar
-                Container(key: _keys[0], child: _sections[0]),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
+            Positioned.fill(
+              child: RepaintBoundary(
+                child: SingleChildScrollView(
+                  controller: _scrollController,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: List.generate(
-                      _sections.length - 1, 
-                      (index) => ScrollReveal(
-                        key: _keys[index + 1],
-                        delay: Duration(milliseconds: 100 * (index % 2)),
-                        child: _sections[index + 1],
+                    children: [
+                      const SizedBox(height: 60), // Space for sticky navbar
+                      Container(key: _keys[0], child: _sections[0]),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: List.generate(
+                            _sections.length - 1, 
+                            (index) => ScrollReveal(
+                              key: _keys[index + 1],
+                              delay: Duration(milliseconds: 100 * (index % 2)),
+                              child: _sections[index + 1],
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: NavBarWidget(
-              sectionNames: _sectionNames,
-              onSectionTap: _scrollToSection,
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: RepaintBoundary(
+                child: NavBarWidget(
+                  sectionNames: _sectionNames,
+                  onSectionTap: _scrollToSection,
+                ),
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
       ),
     );
   }

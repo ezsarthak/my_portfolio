@@ -48,9 +48,9 @@ class ContactWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               socialIcon(PortfolioData.github, SocialIconsFlutter.github),
-              SizedBox(width: 12,),
+              const SizedBox(width: 12),
               socialIcon(PortfolioData.linkedin, SocialIconsFlutter.linkedin_box),
-               SizedBox(width: 12,),
+              const SizedBox(width: 12),
               socialIcon(PortfolioData.twitter, SocialIconsFlutter.twitter),
             ],
           ),

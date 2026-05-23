@@ -12,7 +12,7 @@ class IdeProjectGalleryRaw extends StatefulWidget {
 class _IdeProjectGalleryRawState extends State<IdeProjectGalleryRaw> {
   int activeIndex = 0;
   List<String> terminalLines = [
-    'arjun@nexus-machine:~/portfolio/projects\$ ',
+    'sarthak@nexus-machine:~/portfolio/projects\$ ',
   ];
   late List<String> files;
   bool isPanelOpen = false;
@@ -28,10 +28,15 @@ class _IdeProjectGalleryRawState extends State<IdeProjectGalleryRaw> {
     for (var p in projects) {
       String ext = '.ts';
       List<String> tech = (p['tech'] as List<dynamic>? ?? []).map((e) => e.toString().toLowerCase()).toList();
-      if (tech.contains('flutter') || tech.contains('dart')) ext = '.dart';
-      else if (tech.contains('python') || tech.contains('django') || tech.contains('fastapi') || tech.contains('tensorflow')) ext = '.py';
-      else if (tech.contains('react') || tech.contains('next.js')) ext = '.tsx';
-      else if (tech.contains('node.js') || tech.contains('express')) ext = '.js';
+      if (tech.contains('flutter') || tech.contains('dart')) {
+        ext = '.dart';
+      } else if (tech.contains('python') || tech.contains('django') || tech.contains('fastapi') || tech.contains('tensorflow')) {
+        ext = '.py';
+      } else if (tech.contains('react') || tech.contains('next.js')) {
+        ext = '.tsx';
+      } else if (tech.contains('node.js') || tech.contains('express')) {
+        ext = '.js';
+      }
       
       String name = p['title'].toString().toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '_');
       result.add('$name$ext');
@@ -46,7 +51,7 @@ class _IdeProjectGalleryRawState extends State<IdeProjectGalleryRaw> {
     
     setState(() {
       isPanelOpen = true;
-      terminalLines.add('arjun@nexus-machine:~/portfolio/projects\$ ./run $file');
+      terminalLines.add('sarthak@nexus-machine:~/portfolio/projects\$ ./run $file');
       terminalLines.add('\x1B[33m[INFO]\x1B[0m Starting build process for ${project['title']}...');
     });
     
@@ -63,21 +68,21 @@ class _IdeProjectGalleryRawState extends State<IdeProjectGalleryRaw> {
       if (mounted) {
         setState(() {
           terminalLines.add('\x1B[32m[SUCCESS]\x1B[0m Environment launched successfully! Ready for action.');
-          terminalLines.add('arjun@nexus-machine:~/portfolio/projects\$ ');
+          terminalLines.add('sarthak@nexus-machine:~/portfolio/projects\$ ');
         });
       }
     });
   }
 
   Widget _buildTerminalLine(String line) {
-    if (line.startsWith('arjun@')) {
+    if (line.startsWith('sarthak@')) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 4.0),
         child: RichText(
           text: TextSpan(
             style: const TextStyle(fontFamily: 'monospace', fontSize: 13),
             children: [
-              const TextSpan(text: 'arjun@nexus-machine', style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold)),
+              const TextSpan(text: 'sarthak@nexus-machine', style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold)),
               const TextSpan(text: ':', style: TextStyle(color: Colors.white)),
               const TextSpan(text: '~/portfolio/projects\$ ', style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold)),
               TextSpan(text: line.substring(line.indexOf('\$') + 1), style: const TextStyle(color: Colors.white)),
@@ -277,7 +282,7 @@ class _IdeProjectGalleryRawState extends State<IdeProjectGalleryRaw> {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFF333333)),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 20, offset: const Offset(0, 10))
+          BoxShadow(color: Colors.black.withValues(alpha: 0.5), blurRadius: 20, offset: const Offset(0, 10))
         ],
       ),
       child: Column(
@@ -343,15 +348,15 @@ class _IdeProjectGalleryRawState extends State<IdeProjectGalleryRaw> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-                          child: Text('EXPLORER', style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+                          child: Text('EXPLORER', style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
                           child: Row(
                             children: [
-                              Icon(Icons.keyboard_arrow_down, color: Colors.white.withOpacity(0.8), size: 16),
+                              Icon(Icons.keyboard_arrow_down, color: Colors.white.withValues(alpha: 0.8), size: 16),
                               const SizedBox(width: 4),
-                              Text('PORTFOLIO_WORKSPACE', style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 11, fontWeight: FontWeight.bold)),
+                              Text('PORTFOLIO_WORKSPACE', style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 11, fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
@@ -444,15 +449,15 @@ class _IdeProjectGalleryRawState extends State<IdeProjectGalleryRaw> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
                             children: [
-                              Text('portfolio_workspace', style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 12)),
-                              Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.6), size: 16),
-                              Text('projects', style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 12)),
-                              Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.6), size: 16),
+                              Text('portfolio_workspace', style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 12)),
+                              Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.6), size: 16),
+                              Text('projects', style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 12)),
+                              Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.6), size: 16),
                               Expanded(
                                 child: Text(
                                   files[activeIndex],
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 12),
+                                  style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 12),
                                 ),
                               ),
                             ],

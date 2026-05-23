@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/config/portfolio_data.dart';
 import 'package:portfolio/design/utils/app_colors.dart';
-import 'package:portfolio/design/widgets/tilt_card.dart';
 
 class InternshipsWidget extends StatelessWidget {
   const InternshipsWidget({super.key});

@@ -27,9 +27,9 @@ class StartupWidget extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(40),
             decoration: BoxDecoration(
-                color: AppColors.purpleDark.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.purple.withOpacity(0.5))),
+                color: AppColors.purpleDark.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: AppColors.purple.withValues(alpha: 0.5))),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

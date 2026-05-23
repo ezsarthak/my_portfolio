@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_flutter/social_media_flutter.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:portfolio/design/utils/app_colors.dart';
 
 class HoverSocialIcon extends StatefulWidget {
   final String link;
-  final IconData iconPath;
+  final IconData? iconPath;
+  final String? assetPath;
 
   const HoverSocialIcon({
     super.key,
     required this.link,
-    required this.iconPath,
+    this.iconPath,
+    this.assetPath,
   });
 
   @override
@@ -30,11 +32,23 @@ class _HoverSocialIconState extends State<HoverSocialIcon> {
         onTap: () => launchUrl(Uri.parse(widget.link)),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          child: Icon(
-            widget.iconPath,
-            color: _isHovered ? AppColors.purple : Colors.white,
-            size: 32,
-          ),
+          child: widget.assetPath != null
+              ? (widget.assetPath!.endsWith('.svg')
+                  ? SvgPicture.asset(widget.assetPath!,
+                      width: 32,
+                      height: 32,
+                      colorFilter: ColorFilter.mode(
+                          _isHovered ? AppColors.purple : Colors.white,
+                          BlendMode.srcIn))
+                  : Image.asset(widget.assetPath!,
+                      width: 32,
+                      height: 32,
+                      color: _isHovered ? AppColors.purple : Colors.white))
+              : Icon(
+                  widget.iconPath,
+                  color: _isHovered ? AppColors.purple : Colors.white,
+                  size: 32,
+                ),
         ),
       ),
     );

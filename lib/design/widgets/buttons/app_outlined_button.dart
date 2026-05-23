@@ -43,7 +43,7 @@ class _AppOutlinedButtonState extends State<AppOutlinedButton> {
           curve: Curves.easeOutCubic,
           height: widget.height ?? 33,
           width: widget.width ?? 177,
-          transform: Matrix4.identity()..scale(_isHovered && isEnabled ? 1.05 : 1.0, _isHovered && isEnabled ? 1.05 : 1.0),
+          transform: Matrix4.identity()..scaleByDouble(_isHovered && isEnabled ? 1.05 : 1.0, _isHovered && isEnabled ? 1.05 : 1.0, 1.0, 1.0),
           transformAlignment: Alignment.center,
           decoration: BoxDecoration(
             border: Border.all(color: widget.borderColor ?? AppColors.purple),

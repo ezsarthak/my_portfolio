@@ -73,9 +73,9 @@ class NavBarWidget extends StatelessWidget {
               width: 140,
               textStyle: const TextStyle(fontSize: 12),
               onTap: () async {
-                final Uri _url = Uri.parse(PortfolioData.resumeUrl);
-                if (!await launchUrl(_url)) {
-                  throw Exception('Could not launch $_url');
+                final Uri url = Uri.parse(PortfolioData.resumeUrl);
+                if (!await launchUrl(url)) {
+                  throw Exception('Could not launch $url');
                 }
               },
             )

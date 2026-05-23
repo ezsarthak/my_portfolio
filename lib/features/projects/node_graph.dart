@@ -21,9 +21,9 @@ class _NodeGraphProjectGalleryState extends State<NodeGraphProjectGallery> {
       height: 450,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColors.purpleDark.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppColors.purple.withOpacity(0.3)),
+        color: AppColors.purpleDark.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.purple.withValues(alpha: 0.3)),
       ),
       child: Stack(
         children: [
@@ -45,7 +45,7 @@ class _NodeGraphProjectGalleryState extends State<NodeGraphProjectGallery> {
                   children: [
                     CustomPaint(
                       size: Size(constraints.maxWidth, constraints.maxHeight),
-                      painter: _GraphPainter(positions, AppColors.purple.withOpacity(0.3)),
+                      painter: _GraphPainter(positions, AppColors.purple.withValues(alpha: 0.3)),
                     ),
                     ...widget.projects.asMap().entries.map((entry) {
                       int idx = entry.key;
@@ -67,7 +67,7 @@ class _NodeGraphProjectGalleryState extends State<NodeGraphProjectGallery> {
                                 shape: BoxShape.circle,
                                 color: isActive ? AppColors.purple : AppColors.purpleDark,
                                 border: Border.all(color: AppColors.violet, width: isActive ? 3 : 1),
-                                boxShadow: isActive ? [BoxShadow(color: AppColors.purple.withOpacity(0.6), blurRadius: 20)] : [],
+                                boxShadow: isActive ? [BoxShadow(color: AppColors.purple.withValues(alpha: 0.6), blurRadius: 20)] : [],
                               ),
                               child: Center(
                                 child: Text(
@@ -95,9 +95,9 @@ class _NodeGraphProjectGalleryState extends State<NodeGraphProjectGallery> {
               child: Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: AppColors.purpleDark.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.purple.withOpacity(0.5)),
+                  color: AppColors.purpleDark.withValues(alpha: 0.9),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.purple.withValues(alpha: 0.5)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,7 +152,7 @@ class _NodeGraphProjectGalleryState extends State<NodeGraphProjectGallery> {
                 child: Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: AppColors.purpleDark.withOpacity(0.95),
+                    color: AppColors.purpleDark.withValues(alpha: 0.95),
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
                     border: Border(top: BorderSide(color: AppColors.purple)),
                   ),

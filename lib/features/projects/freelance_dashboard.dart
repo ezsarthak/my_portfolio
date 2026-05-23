@@ -26,7 +26,7 @@ class _FreelanceDashboardState extends State<FreelanceDashboard> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white12),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 30, offset: const Offset(0, 15))
+          BoxShadow(color: Colors.black.withValues(alpha: 0.5), blurRadius: 30, offset: const Offset(0, 15))
         ],
       ),
       clipBehavior: Clip.antiAlias,
@@ -51,7 +51,7 @@ class _FreelanceDashboardState extends State<FreelanceDashboard> {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: AppColors.purple.withOpacity(0.2),
+                            color: AppColors.purple.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Icon(Icons.business_center, color: AppColors.purple, size: 20),
@@ -174,14 +174,14 @@ class _FreelanceDashboardState extends State<FreelanceDashboard> {
                                     color: isSelected ? const Color(0xFF1A1A24) : Colors.transparent,
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(color: isSelected ? AppColors.purple : Colors.white12),
-                                    boxShadow: isSelected ? [BoxShadow(color: AppColors.purple.withOpacity(0.1), blurRadius: 20)] : [],
+                                    boxShadow: isSelected ? [BoxShadow(color: AppColors.purple.withValues(alpha: 0.1), blurRadius: 20)] : [],
                                   ),
                                   child: Row(
                                     children: [
                                       Container(
                                         padding: const EdgeInsets.all(12),
                                         decoration: BoxDecoration(
-                                          color: isSelected ? AppColors.purple.withOpacity(0.2) : Colors.white12,
+                                          color: isSelected ? AppColors.purple.withValues(alpha: 0.2) : Colors.white12,
                                           shape: BoxShape.circle,
                                         ),
                                         child: Icon(Icons.description_outlined, color: isSelected ? AppColors.purple : Colors.white54, size: 24),
@@ -209,9 +209,9 @@ class _FreelanceDashboardState extends State<FreelanceDashboard> {
                                           Container(
                                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                                             decoration: BoxDecoration(
-                                              color: Colors.greenAccent.withOpacity(0.1),
+                                              color: Colors.greenAccent.withValues(alpha: 0.1),
                                               borderRadius: BorderRadius.circular(20),
-                                              border: Border.all(color: Colors.greenAccent.withOpacity(0.3)),
+                                              border: Border.all(color: Colors.greenAccent.withValues(alpha: 0.3)),
                                             ),
                                             child: const Text('DELIVERED', style: TextStyle(color: Colors.greenAccent, fontSize: 11, fontWeight: FontWeight.bold)),
                                           ),
@@ -340,7 +340,7 @@ class _FreelanceDashboardState extends State<FreelanceDashboard> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: isCompleted ? Colors.greenAccent.withOpacity(0.1) : Colors.white12,
+              color: isCompleted ? Colors.greenAccent.withValues(alpha: 0.1) : Colors.white12,
               shape: BoxShape.circle,
             ),
             child: Icon(icon, color: isCompleted ? Colors.greenAccent : Colors.white54, size: 16),
@@ -374,7 +374,7 @@ class _FreelanceDashboardState extends State<FreelanceDashboard> {
               width: 4,
             ),
           ),
-          color: isActive ? Colors.white.withOpacity(0.05) : Colors.transparent,
+          color: isActive ? Colors.white.withValues(alpha: 0.05) : Colors.transparent,
         ),
         child: Row(
           children: [

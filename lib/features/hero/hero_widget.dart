@@ -6,8 +6,6 @@ import 'package:portfolio/design/widgets/magnetic_button.dart';
 import 'package:portfolio/design/widgets/tilt_card.dart';
 import 'package:social_media_flutter/social_media_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/link.dart';
 import 'package:portfolio/design/widgets/hover_social_icon.dart';
 
 import 'package:rive/rive.dart';
@@ -35,7 +33,7 @@ class HeroWidget extends StatelessWidget {
                 BoxShadow(
                   blurRadius: 300,
                   spreadRadius: 300,
-                  color: AppColors.purple.withOpacity(0.3),
+                  color: AppColors.purple.withValues(alpha: 0.3),
                 )
               ]),
             )
@@ -160,10 +158,9 @@ class HeroWidget extends StatelessWidget {
                     : MainAxisAlignment.start,
                 children: [
                   socialIcon(PortfolioData.github, SocialIconsFlutter.github),
-                  socialIcon(
-                      PortfolioData.linkedin, SocialIconsFlutter.linkedin_box),
+                  socialIcon(PortfolioData.linkedin, SocialIconsFlutter.linkedin_box),
                   socialIcon(PortfolioData.twitter, SocialIconsFlutter.twitter),
-                  socialIcon(PortfolioData.leetcode, FontAwesomeIcons.medium),
+                  socialIcon(PortfolioData.medium, FontAwesomeIcons.medium),
                 ],
               )
                   .animate(delay: 100.ms)

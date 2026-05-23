@@ -58,13 +58,15 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
     return Stack(
       children: [
         Positioned.fill(
-          child: AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return CustomPaint(
-                painter: AmbientOrbsPainter(_orbs, _controller.value),
-              );
-            },
+          child: RepaintBoundary(
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                return CustomPaint(
+                  painter: AmbientOrbsPainter(_orbs, _controller.value),
+                );
+              },
+            ),
           ),
         ),
         // A subtle noise overlay or grid can be added here if needed
@@ -107,7 +109,7 @@ class AmbientOrbsPainter extends CustomPainter {
         ..shader = RadialGradient(
           colors: [
             orb.color,
-            orb.color.withOpacity(0),
+            orb.color.withValues(alpha: 0),
           ],
         ).createShader(Rect.fromCircle(center: Offset(dx, dy), radius: orb.radius))
         ..blendMode = BlendMode.screen;

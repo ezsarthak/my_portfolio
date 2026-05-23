@@ -27,9 +27,8 @@ class _TiltCardState extends State<TiltCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOutCubic,
-        transform: Matrix4.identity()
-          ..translate(0.0, _isHovered ? -6.0 : 0.0)
-          ..scale(_isHovered ? 1.02 : 1.0, _isHovered ? 1.02 : 1.0),
+        transform: Matrix4.translationValues(0, _isHovered ? -5 : 0, 0)
+          ..scaleByDouble(_isHovered ? 1.02 : 1.0, _isHovered ? 1.02 : 1.0, 1.0, 1.0),
         transformAlignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),

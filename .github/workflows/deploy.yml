@@ -1,0 +1,50 @@
+name: Build & Deploy Portfolio to Ubuntu VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Static Code Analysis
+        run: flutter analyze lib/
+
+      - name: Build Flutter Web Release
+        run: flutter build web --release --web-renderer auto
+
+      - name: Configure SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: 'temporary-placeholder'
+          if_key_exists: replace
+
+      - name: Register VM in Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to Ubuntu VM using Rsync
+        run: |
+          rsync -avz --delete build/web/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/ezsarthak/
