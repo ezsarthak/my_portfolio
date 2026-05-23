@@ -31,7 +31,7 @@ jobs:
         run: flutter analyze lib/
 
       - name: Build Flutter Web Release
-        run: flutter build web --release --web-renderer auto
+        run: flutter build web --release
 
       - name: Configure SSH Key
         uses: shimataro/ssh-key-action@v2
