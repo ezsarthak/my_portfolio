@@ -40,11 +40,6 @@ jobs:
           known_hosts: 'temporary-placeholder'
           if_key_exists: replace
 
-      - name: Register VM in Known Hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
       - name: Deploy to Ubuntu VM using Rsync
         run: |
-          rsync -avz --delete build/web/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/ezsarthak/
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" build/web/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/ezsarthak/
