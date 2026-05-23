@@ -39,10 +39,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
           if_key_exists: replace
-
       - name: Test SSH Connection
-        run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo SSH connection successful"
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo SSH connection successful"
+          sleep 2
 
       - name: Deploy to Ubuntu VM using Rsync
         run: |
-          rsync -avz --delete -e "ssh" build/web/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/ezsarthak/
+          rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ServerAliveInterval=60" \
+            build/web/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/ezsarthak/
