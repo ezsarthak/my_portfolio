@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/config/portfolio_data.dart';
+import 'package:portfolio/design/widgets/animated_background.dart';
 import 'package:portfolio/features/navbar/navbar_widget.dart';
 import 'package:portfolio/features/hero/hero_widget.dart';
 import 'package:portfolio/features/about/about_widget.dart';
@@ -10,6 +11,7 @@ import 'package:portfolio/features/startup/startup_widget.dart';
 import 'package:portfolio/features/dsa/dsa_widget.dart';
 import 'package:portfolio/features/contact/contact_widget.dart';
 import 'package:portfolio/features/blogs/blogs_widget.dart';
+import 'package:portfolio/design/widgets/scroll_reveal.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -68,40 +70,49 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            controller: _scrollController,
-            child: Column(
-              children: [
-                const SizedBox(height: 60), // Space for sticky navbar
-                Container(key: _keys[0], child: _sections[0]),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
+      body: AnimatedBackground(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: RepaintBoundary(
+                child: SingleChildScrollView(
+                  controller: _scrollController,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: List.generate(
-                      _sections.length - 1, 
-                      (index) => Container(
-                        key: _keys[index + 1],
-                        child: _sections[index + 1],
+                    children: [
+                      const SizedBox(height: 60), // Space for sticky navbar
+                      Container(key: _keys[0], child: _sections[0]),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: List.generate(
+                            _sections.length - 1, 
+                            (index) => ScrollReveal(
+                              key: _keys[index + 1],
+                              delay: Duration(milliseconds: 100 * (index % 2)),
+                              child: _sections[index + 1],
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: NavBarWidget(
-              sectionNames: _sectionNames,
-              onSectionTap: _scrollToSection,
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: RepaintBoundary(
+                child: NavBarWidget(
+                  sectionNames: _sectionNames,
+                  onSectionTap: _scrollToSection,
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

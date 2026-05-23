@@ -27,9 +27,9 @@ class StartupWidget extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(40),
             decoration: BoxDecoration(
-                color: AppColors.purpleDark.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.purple.withOpacity(0.5))),
+                color: AppColors.purpleDark.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: AppColors.purple.withValues(alpha: 0.5))),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -60,12 +60,9 @@ class StartupWidget extends StatelessWidget {
                 Wrap(
                   spacing: 20,
                   runSpacing: 20,
-                  children: [
-                    _buildMetric('Users', startup['metrics']['users']),
-                    _buildMetric('Colleges', startup['metrics']['colleges']),
-                    _buildMetric('Revenue', startup['metrics']['revenue']),
-                    _buildMetric('Team Size', startup['metrics']['teamSize']),
-                  ],
+                  children: (startup['metrics'] as Map<String, dynamic>).entries.map(
+                    (e) => _buildMetric(e.key, e.value.toString())
+                  ).toList(),
                 )
               ],
             ),

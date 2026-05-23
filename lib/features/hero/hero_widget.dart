@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:portfolio/config/portfolio_data.dart';
 import 'package:portfolio/design/utils/app_colors.dart';
+import 'package:portfolio/design/widgets/magnetic_button.dart';
+import 'package:portfolio/design/widgets/tilt_card.dart';
 import 'package:social_media_flutter/social_media_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:portfolio/design/widgets/hover_social_icon.dart';
 
 import 'package:rive/rive.dart';
 
@@ -13,7 +17,7 @@ class HeroWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     bool isMobile = w < 800;
-    
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: isMobile ? 0 : w / 30),
       height: MediaQuery.of(context).size.height * 0.9,
@@ -29,10 +33,17 @@ class HeroWidget extends StatelessWidget {
                 BoxShadow(
                   blurRadius: 300,
                   spreadRadius: 300,
-                  color: AppColors.purple.withOpacity(0.3),
+                  color: AppColors.purple.withValues(alpha: 0.3),
                 )
               ]),
-            ),
+            )
+                .animate(
+                    onPlay: (controller) => controller.repeat(reverse: true))
+                .scaleXY(
+                    begin: 1.0,
+                    end: 1.2,
+                    duration: 4.seconds,
+                    curve: Curves.easeInOut),
           ),
           // Rive Animation
           Align(
@@ -40,20 +51,31 @@ class HeroWidget extends StatelessWidget {
             child: SizedBox(
               width: 600,
               height: 600,
-              child: RiveAnimation.asset('assets/animations/intro_animation.riv', fit: BoxFit.contain),
+              child: RiveAnimation.asset(
+                  'assets/animations/intro_animation.riv',
+                  fit: BoxFit.contain),
             ),
-          ),
+          )
+              .animate()
+              .fadeIn(duration: 500.ms, delay: 100.ms)
+              .slideY(begin: 0.1, end: 0, curve: Curves.easeOutCubic),
           Center(
-            child: isMobile 
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: _buildContent(w, isMobile),
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: _buildContent(w, isMobile),
-                ),
+            child: isMobile
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: _buildContent(w, isMobile),
+                  )
+                    .animate()
+                    .fadeIn(duration: 400.ms, curve: Curves.easeOut)
+                    .slideY(begin: 0.05, end: 0, curve: Curves.easeOutCubic)
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: _buildContent(w, isMobile),
+                  )
+                    .animate()
+                    .fadeIn(duration: 400.ms, curve: Curves.easeOut)
+                    .slideX(begin: -0.05, end: 0, curve: Curves.easeOutCubic),
           ),
         ],
       ),
@@ -62,19 +84,23 @@ class HeroWidget extends StatelessWidget {
 
   List<Widget> _buildContent(double w, bool isMobile) {
     return [
-      CircleAvatar(
-        radius: isMobile ? 64 : w / 14,
-        backgroundColor: Colors.white,
+      TiltCard(
+        depth: 20,
         child: CircleAvatar(
-          radius: isMobile ? 60 : w / 14 - 4,
-          backgroundColor: AppColors.purpleDark,
-          backgroundImage: const AssetImage('assets/images/self.jpeg'),
+          radius: isMobile ? 64 : w / 14,
+          backgroundColor: Colors.white,
+          child: CircleAvatar(
+            radius: isMobile ? 60 : w / 14 - 4,
+            backgroundColor: AppColors.purpleDark,
+            backgroundImage: const AssetImage('assets/images/self.jpeg'),
+          ),
         ),
       ),
       SizedBox(width: isMobile ? 0 : 100, height: isMobile ? 20 : 0),
       Expanded(
         child: Column(
-          crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+          crossAxisAlignment:
+              isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RichText(
@@ -127,15 +153,21 @@ class HeroWidget extends StatelessWidget {
             const SizedBox(height: 20),
             SizedBox(
               child: Row(
-                mainAxisAlignment: isMobile ? MainAxisAlignment.center : MainAxisAlignment.start,
+                mainAxisAlignment: isMobile
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.start,
                 children: [
                   socialIcon(PortfolioData.github, SocialIconsFlutter.github),
                   socialIcon(PortfolioData.linkedin, SocialIconsFlutter.linkedin_box),
                   socialIcon(PortfolioData.twitter, SocialIconsFlutter.twitter),
-                  socialIcon(PortfolioData.leetcode, SocialIconsFlutter.apple), // Using placeholder
+                  socialIcon(PortfolioData.medium, FontAwesomeIcons.medium),
                 ],
-              ),
-            )
+              )
+                  .animate(delay: 100.ms)
+                  .fadeIn(duration: 400.ms)
+                  .slideY(begin: 0.2, end: 0, curve: Curves.easeOutBack),
+            ),
+          
           ],
         ),
       )
@@ -143,13 +175,14 @@ class HeroWidget extends StatelessWidget {
   }
 
   Widget socialIcon(String link, IconData iconPath) {
-    return InkWell(
-      onTap: () => launchUrl(Uri.parse(link)),
-      child: SocialWidget(
-        placeholderText: '',
-        iconData: iconPath,
-        iconColor: Colors.white,
-        link: link,
+    return MagneticButton(
+      magneticStrength: 0.3,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: HoverSocialIcon(
+          link: link,
+          iconPath: iconPath,
+        ),
       ),
     );
   }

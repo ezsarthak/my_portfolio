@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio/config/portfolio_data.dart';
 import 'package:portfolio/design/utils/app_colors.dart';
 import 'package:portfolio/design/widgets/buttons/app_outlined_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NavBarWidget extends StatelessWidget {
   final List<String> sectionNames;
@@ -25,17 +26,34 @@ class NavBarWidget extends StatelessWidget {
         color: AppColors.navBarColor,
         child: Center(
             child: Row(
-          mainAxisAlignment: isMobile ? MainAxisAlignment.center : MainAxisAlignment.spaceAround,
+          mainAxisAlignment: isMobile
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.spaceAround,
           children: [
-            RichText(
-              text: TextSpan(
-                  style: GoogleFonts.inter(color: Colors.white, fontSize: 16),
-                  children: [
-                    TextSpan(
-                      text: '${PortfolioData.name} ',
-                      style: GoogleFonts.inter(color: AppColors.purple, fontWeight: FontWeight.bold),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppColors.purpleDark.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                    color: AppColors.purple.withValues(alpha: 0.5), width: 1),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.code_rounded, color: AppColors.purple, size: 20),
+                  const SizedBox(width: 8),
+                  Text(
+                    PortfolioData.name,
+                    style: GoogleFonts.inter(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.0,
                     ),
-                  ]),
+                  ),
+                ],
+              ),
             ),
             if (!isMobile)
               Row(
@@ -54,7 +72,12 @@ class NavBarWidget extends StatelessWidget {
               height: 35,
               width: 140,
               textStyle: const TextStyle(fontSize: 12),
-              onTap: () {},
+              onTap: () async {
+                final Uri url = Uri.parse(PortfolioData.resumeUrl);
+                if (!await launchUrl(url)) {
+                  throw Exception('Could not launch $url');
+                }
+              },
             )
           ],
         )));

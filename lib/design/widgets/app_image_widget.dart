@@ -14,6 +14,7 @@ class AppImageWidget extends StatelessWidget {
   final Widget? placeholder;
 
   const AppImageWidget({
+    super.key,
     this.bytes,
     this.path,
     this.url,
@@ -21,10 +22,9 @@ class AppImageWidget extends StatelessWidget {
     this.imageHeight,
     this.imageTint,
     this.imageFit,
-    Key? key,
     this.placeholder,
     this.boxDecoration,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,7 @@ class AppImageWidget extends StatelessWidget {
         errorBuilder: (context, error, stackTrace) => Container(
           width: imageWidth,
           height: imageHeight,
-          color: Colors.grey.withOpacity(0.2),
+          color: Colors.grey.withValues(alpha: 0.2),
           child: const Icon(Icons.image, color: Colors.grey),
         ),
       );

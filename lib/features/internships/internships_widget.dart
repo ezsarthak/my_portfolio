@@ -20,89 +20,129 @@ class InternshipsWidget extends StatelessWidget {
             style: TextStyle(fontSize: 40),
           ),
           const SizedBox(height: 40),
-          Wrap(
-            runSpacing: 20,
-            spacing: 20,
-            direction: Axis.horizontal,
-            children: PortfolioData.internships.map((internship) {
-              return _buildInternshipCard(
-                w, isMobile,
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: PortfolioData.internships.length,
+            itemBuilder: (context, index) {
+              final internship = PortfolioData.internships[index];
+              return _buildTimelineNode(
+                w, isMobile, index, PortfolioData.internships.length,
                 internship['company']!,
                 internship['role']!,
                 internship['duration']!,
                 internship['description']!,
               );
-            }).toList(),
+            },
           ),
         ],
       ),
     );
   }
 
-  Widget _buildInternshipCard(
-      double w, bool isMobile, String company, String role, String duration, String desc) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () {},
-        borderRadius: BorderRadius.circular(20),
-        hoverColor: AppColors.purple.withOpacity(0.1),
-        child: Container(
-          width: isMobile ? w * 0.8 : w / 2.4,
-          height: 220,
-          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-          decoration: BoxDecoration(
-              color: AppColors.purpleDark.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(20)),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: AppColors.violet,
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Text(
-                    company[0],
-                    style: TextStyle(fontSize: 24, color: AppColors.purple, fontWeight: FontWeight.bold),
+  Widget _buildTimelineNode(
+      double w, bool isMobile, int index, int total, String company, String role, String duration, String desc) {
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Timeline graphics
+          SizedBox(
+            width: isMobile ? 40 : 80,
+            child: Column(
+              children: [
+                // Top line
+                Expanded(
+                  child: Container(
+                    width: 2,
+                    color: index == 0 ? Colors.transparent : AppColors.purple.withValues(alpha: 0.3),
                   ),
                 ),
-              ),
-              const SizedBox(width: 20),
-              Flexible(
+                // Glowing Node
+                Container(
+                  width: 16,
+                  height: 16,
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.purple,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.purple.withValues(alpha: 0.6),
+                        blurRadius: 10,
+                        spreadRadius: 2,
+                      )
+                    ]
+                  ),
+                ),
+                // Bottom line
+                Expanded(
+                  child: Container(
+                    width: 2,
+                    color: index == total - 1 ? Colors.transparent : AppColors.purple.withValues(alpha: 0.3),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Content Card
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 40.0, top: 0),
+              child: Container(
+                padding: const EdgeInsets.all(30),
+                decoration: BoxDecoration(
+                  color: AppColors.purpleDark.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: AppColors.purple.withValues(alpha: 0.2)),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      role,
-                      style: const TextStyle(
-                          fontSize: 22, height: 1.2, fontWeight: FontWeight.w600),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            role,
+                            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
+                        ),
+                        if (!isMobile)
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: AppColors.purple.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: AppColors.purple.withValues(alpha: 0.5)),
+                            ),
+                            child: Text(duration, style: TextStyle(color: AppColors.purple, fontSize: 14, fontWeight: FontWeight.bold)),
+                          )
+                      ],
                     ),
-                    Text(
-                      company,
-                      style: TextStyle(fontSize: 16, color: AppColors.purple),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      duration,
-                      style: const TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      desc,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    const SizedBox(height: 8),
+                    Text(company, style: TextStyle(fontSize: 18, color: AppColors.purple.withValues(alpha: 0.8), fontWeight: FontWeight.w600)),
+                    if (isMobile) ...[
+                      const SizedBox(height: 12),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: AppColors.purple.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: AppColors.purple.withValues(alpha: 0.5)),
+                        ),
+                        child: Text(duration, style: TextStyle(color: AppColors.purple, fontSize: 14, fontWeight: FontWeight.bold)),
+                      )
+                    ],
+                    const SizedBox(height: 20),
+                    Text(desc, style: const TextStyle(height: 1.5, color: Colors.white70, fontSize: 15)),
                   ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
