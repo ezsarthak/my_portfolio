@@ -19,46 +19,48 @@ class HeroWidget extends StatelessWidget {
     bool isMobile = w < 800;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: isMobile ? 0 : w / 30),
-      height: MediaQuery.of(context).size.height * 0.9,
+      padding: EdgeInsets.symmetric(horizontal: isMobile ? 0 : w / 30, vertical: isMobile ? 40 : 0),
+      height: isMobile ? null : MediaQuery.of(context).size.height * 0.9,
       child: Stack(
         children: [
-          // Background Glow
-          Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-              height: 200,
-              width: 200,
-              decoration: BoxDecoration(color: Colors.transparent, boxShadow: [
-                BoxShadow(
-                  blurRadius: 300,
-                  spreadRadius: 300,
-                  color: AppColors.purple.withValues(alpha: 0.3),
-                )
-              ]),
-            )
-                .animate(
-                    onPlay: (controller) => controller.repeat(reverse: true))
-                .scaleXY(
-                    begin: 1.0,
-                    end: 1.2,
-                    duration: 4.seconds,
-                    curve: Curves.easeInOut),
-          ),
-          // Rive Animation
-          Align(
-            alignment: Alignment.bottomRight,
-            child: SizedBox(
-              width: 600,
-              height: 600,
-              child: RiveAnimation.asset(
-                  'assets/animations/intro_animation.riv',
-                  fit: BoxFit.contain),
+          if (!isMobile)
+            // Background Glow
+            Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                height: 200,
+                width: 200,
+                decoration: BoxDecoration(color: Colors.transparent, boxShadow: [
+                  BoxShadow(
+                    blurRadius: 300,
+                    spreadRadius: 300,
+                    color: AppColors.purple.withValues(alpha: 0.3),
+                  )
+                ]),
+              )
+                  .animate(
+                      onPlay: (controller) => controller.repeat(reverse: true))
+                  .scaleXY(
+                      begin: 1.0,
+                      end: 1.2,
+                      duration: 4.seconds,
+                      curve: Curves.easeInOut),
             ),
-          )
-              .animate()
-              .fadeIn(duration: 500.ms, delay: 100.ms)
-              .slideY(begin: 0.1, end: 0, curve: Curves.easeOutCubic),
+          if (!isMobile)
+            // Rive Animation
+            Align(
+              alignment: Alignment.bottomRight,
+              child: SizedBox(
+                width: 600,
+                height: 600,
+                child: RiveAnimation.asset(
+                    'assets/animations/intro_animation.riv',
+                    fit: BoxFit.contain),
+              ),
+            )
+                .animate()
+                .fadeIn(duration: 500.ms, delay: 100.ms)
+                .slideY(begin: 0.1, end: 0, curve: Curves.easeOutCubic),
           Center(
             child: isMobile
                 ? Column(
@@ -87,29 +89,41 @@ class HeroWidget extends StatelessWidget {
       TiltCard(
         depth: 20,
         child: CircleAvatar(
-          radius: isMobile ? 64 : w / 14,
+          radius: isMobile ? 52 : w / 14,
           backgroundColor: Colors.white,
           child: CircleAvatar(
-            radius: isMobile ? 60 : w / 14 - 4,
+            radius: isMobile ? 48 : w / 14 - 4,
             backgroundColor: AppColors.purpleDark,
             backgroundImage: const AssetImage('assets/images/self.jpeg'),
           ),
         ),
       ),
       SizedBox(width: isMobile ? 0 : 100, height: isMobile ? 20 : 0),
-      Expanded(
-        child: Column(
-          crossAxisAlignment:
-              isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+      isMobile
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: _textContent(w, isMobile),
+            )
+          : Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: _textContent(w, isMobile),
+              ),
+            ),
+    ];
+  }
+
+  List<Widget> _textContent(double w, bool isMobile) {
+    return [
             RichText(
               textAlign: isMobile ? TextAlign.center : TextAlign.start,
               text: TextSpan(
                   style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Preah',
-                      fontSize: isMobile ? 24 : w / 40),
+                      fontSize: isMobile ? 20 : w / 40),
                   children: [
                     const TextSpan(text: 'I am '),
                     TextSpan(
@@ -129,7 +143,7 @@ class HeroWidget extends StatelessWidget {
                       color: Colors.white,
                       height: 1.2,
                       fontFamily: 'Preah',
-                      fontSize: isMobile ? 32 : w / 20,
+                      fontSize: isMobile ? 26 : w / 20,
                       fontWeight: FontWeight.bold),
                   children: [
                     const TextSpan(text: 'Crafting code to bring\n'),
@@ -140,7 +154,7 @@ class HeroWidget extends StatelessWidget {
                     const TextSpan(text: '...')
                   ]),
             ),
-            const SizedBox(height: 60),
+            const SizedBox(height: 30),
             Text(
               PortfolioData.tagline,
               textAlign: isMobile ? TextAlign.center : TextAlign.start,
@@ -167,11 +181,7 @@ class HeroWidget extends StatelessWidget {
                   .fadeIn(duration: 400.ms)
                   .slideY(begin: 0.2, end: 0, curve: Curves.easeOutBack),
             ),
-          
-          ],
-        ),
-      )
-    ];
+          ];
   }
 
   Widget socialIcon(String link, dynamic iconPath) {

@@ -19,7 +19,7 @@ class _FreelanceDashboardState extends State<FreelanceDashboard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 600,
+      height: widget.isMobile ? 450 : 600,
       width: double.infinity,
       decoration: BoxDecoration(
         color: const Color(0xFF0D0D12), // Deep SaaS background
@@ -125,21 +125,23 @@ class _FreelanceDashboardState extends State<FreelanceDashboard> {
                           style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                         const Spacer(),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: Colors.white12,
-                            borderRadius: BorderRadius.circular(20),
+                        if (!widget.isMobile) ...[
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: Colors.white12,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Row(
+                              children: const [
+                                Icon(Icons.search, color: Colors.white54, size: 18),
+                                SizedBox(width: 8),
+                                Text('Search contracts...', style: TextStyle(color: Colors.white54, fontSize: 13)),
+                              ],
+                            ),
                           ),
-                          child: Row(
-                            children: const [
-                              Icon(Icons.search, color: Colors.white54, size: 18),
-                              SizedBox(width: 8),
-                              Text('Search contracts...', style: TextStyle(color: Colors.white54, fontSize: 13)),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 24),
+                          const SizedBox(width: 24),
+                        ],
                         CircleAvatar(
                           radius: 18,
                           backgroundColor: AppColors.purple,
@@ -158,7 +160,7 @@ class _FreelanceDashboardState extends State<FreelanceDashboard> {
                         Expanded(
                           flex: 3,
                           child: ListView.builder(
-                            padding: const EdgeInsets.all(32),
+                            padding: EdgeInsets.all(widget.isMobile ? 16 : 32),
                             itemCount: widget.projects.length,
                             itemBuilder: (context, index) {
                               var project = widget.projects[index];
@@ -169,7 +171,7 @@ class _FreelanceDashboardState extends State<FreelanceDashboard> {
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 200),
                                   margin: const EdgeInsets.only(bottom: 16),
-                                  padding: const EdgeInsets.all(20),
+                                  padding: EdgeInsets.all(widget.isMobile ? 12 : 20),
                                   decoration: BoxDecoration(
                                     color: isSelected ? const Color(0xFF1A1A24) : Colors.transparent,
                                     borderRadius: BorderRadius.circular(12),

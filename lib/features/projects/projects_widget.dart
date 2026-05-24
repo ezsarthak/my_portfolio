@@ -3,6 +3,8 @@ import 'package:portfolio/config/portfolio_data.dart';
 
 import 'ide_readable.dart';
 import 'freelance_dashboard.dart';
+import 'mobile_project_card.dart';
+import 'mobile_freelance_card.dart';
 
 class ProjectsWidget extends StatelessWidget {
   const ProjectsWidget({super.key});
@@ -23,15 +25,19 @@ class ProjectsWidget extends StatelessWidget {
           ),
           const SizedBox(height: 40),
           
-          IdeProjectGalleryReadable(projects: PortfolioData.devProjects, isMobile: isMobile),
-          const SizedBox(height: 100),
+          isMobile
+              ? MobileProjectGallery(projects: PortfolioData.devProjects)
+              : IdeProjectGalleryReadable(projects: PortfolioData.devProjects, isMobile: isMobile),
+          SizedBox(height: isMobile ? 40 : 100),
 
           const Text(
             'Freelance Work',
             style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 40),
-          FreelanceDashboard(projects: PortfolioData.freelanceProjects, isMobile: isMobile),
+          isMobile
+              ? MobileFreelanceGallery(projects: PortfolioData.freelanceProjects)
+              : FreelanceDashboard(projects: PortfolioData.freelanceProjects, isMobile: isMobile),
         ],
       ),
     );

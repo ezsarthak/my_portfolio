@@ -115,7 +115,7 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
   Widget _buildFileContent(int index) {
     if (index == 0) {
       return Padding(
-        padding: const EdgeInsets.all(40.0),
+        padding: EdgeInsets.all(widget.isMobile ? 20.0 : 40.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -139,17 +139,18 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
     String firstLetter = project['title'].toString().substring(0, 1).toUpperCase();
 
     return Padding(
-      padding: const EdgeInsets.all(40.0),
+      padding: EdgeInsets.all(widget.isMobile ? 20.0 : 40.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          Flex(
+            direction: widget.isMobile ? Axis.vertical : Axis.horizontal,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Use Image from assets if available, else fallback
               Container(
-                width: 100,
-                height: 100,
+                width: widget.isMobile ? 64 : 100,
+                height: widget.isMobile ? 64 : 100,
                 decoration: BoxDecoration(
                   color: const Color(0xFF252526),
                   borderRadius: BorderRadius.circular(20),
@@ -162,12 +163,12 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
                     ? Image.asset(project['image'], fit: BoxFit.cover, errorBuilder: (ctx, err, stack) => _buildFallbackIcon(firstLetter))
                     : _buildFallbackIcon(firstLetter),
               ),
-              const SizedBox(width: 32),
+              SizedBox(width: widget.isMobile ? 0 : 32, height: widget.isMobile ? 24 : 0),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(project['title'], style: const TextStyle(color: Colors.white, fontSize: 36, fontWeight: FontWeight.bold)),
+                    Text(project['title'], style: TextStyle(color: Colors.white, fontSize: widget.isMobile ? 24 : 36, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
                     Row(
                       children: [
@@ -210,7 +211,9 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
             ],
           ),
           const SizedBox(height: 40),
-          Row(
+          Wrap(
+            spacing: 16,
+            runSpacing: 16,
             children: [
               _buildInteractiveButton(
                 text: 'Run Simulation',
@@ -259,7 +262,8 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
           
           // Enhanced Detail Section
           if (project.containsKey('technicalDetails') && project['technicalDetails'] != null && (project['technicalDetails'] as List).isNotEmpty) ...[
-            Row(
+            Flex(
+              direction: widget.isMobile ? Axis.vertical : Axis.horizontal,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
@@ -289,7 +293,7 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
                     ],
                   ),
                 ),
-                const SizedBox(width: 40),
+                SizedBox(width: widget.isMobile ? 0 : 40, height: widget.isMobile ? 40 : 0),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -390,7 +394,7 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
         ),
       ),
       child: Center(
-        child: Text(firstLetter, style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Colors.white)),
+        child: Text(firstLetter, style: TextStyle(fontSize: widget.isMobile ? 32 : 48, fontWeight: FontWeight.bold, color: Colors.white)),
       ),
     );
   }
@@ -433,8 +437,10 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(icon, color: filled ? Colors.black : color, size: 20),
-                  const SizedBox(width: 8),
-                  Text(text, style: TextStyle(color: filled ? Colors.black : color, fontSize: 15, fontWeight: FontWeight.bold)),
+                  if (!widget.isMobile) ...[
+                    const SizedBox(width: 8),
+                    Text(text, style: TextStyle(color: filled ? Colors.black : color, fontSize: 15, fontWeight: FontWeight.bold)),
+                  ],
                 ],
               ),
             ),
@@ -484,7 +490,7 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 800, // Taller to accommodate more details
+      height: widget.isMobile ? 650 : 800, // Taller to accommodate more details
       width: double.infinity,
       decoration: BoxDecoration(
         color: const Color(0xFF1E1E1E), // Standard VS Code Dark+ Editor Background
@@ -529,7 +535,8 @@ class _IdeProjectGalleryReadableState extends State<IdeProjectGalleryReadable> {
             child: Row(
               children: [
                 // Activity Bar
-                Container(
+                if (!widget.isMobile)
+                  Container(
                   width: 55,
                   color: const Color(0xFF181818),
                   child: Column(

@@ -27,9 +27,10 @@ class NavBarWidget extends StatelessWidget {
         child: Center(
             child: Row(
           mainAxisAlignment: isMobile
-              ? MainAxisAlignment.center
+              ? MainAxisAlignment.spaceBetween
               : MainAxisAlignment.spaceAround,
           children: [
+            if (isMobile) const SizedBox(width: 16),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
@@ -67,18 +68,30 @@ class NavBarWidget extends StatelessWidget {
                   );
                 }),
               ),
-            AppOutlinedButton(
-              title: 'Download Resume',
-              height: 35,
-              width: 140,
-              textStyle: const TextStyle(fontSize: 12),
-              onTap: () async {
-                final Uri url = Uri.parse(PortfolioData.resumeUrl);
-                if (!await launchUrl(url)) {
-                  throw Exception('Could not launch $url');
-                }
-              },
-            )
+            if (isMobile)
+              IconButton(
+                icon: const Icon(Icons.download_rounded, color: Colors.white70),
+                onPressed: () async {
+                  final Uri url = Uri.parse(PortfolioData.resumeUrl);
+                  if (!await launchUrl(url)) {
+                    throw Exception('Could not launch $url');
+                  }
+                },
+              )
+            else
+              AppOutlinedButton(
+                title: 'Download Resume',
+                height: 35,
+                width: 140,
+                textStyle: const TextStyle(fontSize: 12),
+                onTap: () async {
+                  final Uri url = Uri.parse(PortfolioData.resumeUrl);
+                  if (!await launchUrl(url)) {
+                    throw Exception('Could not launch $url');
+                  }
+                },
+              ),
+            if (isMobile) const SizedBox(width: 16),
           ],
         )));
   }
