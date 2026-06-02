@@ -27,8 +27,8 @@ class AboutWidget extends StatelessWidget {
           ),
           const SizedBox(height: 40),
           Wrap(
-            runSpacing: 30,
-            spacing: 30,
+            runSpacing: 24,
+            spacing: 24,
             alignment: isMobile ? WrapAlignment.center : WrapAlignment.start,
             children: PortfolioData.quickStats.map((stat) => _buildStatCard(w, isMobile, stat['value']!, stat['label']!, stat['image']!)).toList(),
           )
